@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-@RedisHash("Job")
+//@RedisHash("Job")
 public class Job {
 
     @Id

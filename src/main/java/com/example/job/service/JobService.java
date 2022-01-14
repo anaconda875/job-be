@@ -3,6 +3,7 @@ package com.example.job.service;
 import com.example.job.dto.request.JobFilter;
 import com.example.job.entity.Employer;
 import com.example.job.entity.Job;
+import com.example.job.entity.JobCategory;
 import com.example.job.exception.ResourceNotFoundException;
 import com.example.job.repository.EmployerRepository;
 import com.example.job.repository.JobRepository;
@@ -45,10 +46,15 @@ public class JobService {
         return jobRepository.save(persisted);
     }
 
+    public int countByJobCategory(JobCategory jobCategory) {
+        return jobRepository.countByJobCategory(jobCategory);
+    }
+
     @PostConstruct
     public void init() {
-//        postJob(null, new Job(null, "title1", "description1", "location1", null, null, null));
-//        postJob(null, new Job(null, "title2", "description2", "location2", null, null, null));
+//        create(1l, new Job(null, "title1", "description1", "location1", null, null, new JobCategory(1l)));
+//        create(1l, new Job(null, "title2", "description2", "location2", null, null, new JobCategory(2l)));
+        System.out.println(countByJobCategory(new JobCategory(1l)));
 //        System.out.println(jobRepository.searchJob(null, null, null, null));
     }
 

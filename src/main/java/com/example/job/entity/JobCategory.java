@@ -21,4 +21,7 @@ public class JobCategory {
 
     private String name;
 
+    public JobCategory(Long id) {
+        this.id = id;
+    }
 }
