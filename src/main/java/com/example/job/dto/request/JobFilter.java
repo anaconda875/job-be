@@ -5,7 +5,7 @@ import com.example.job.entity.JobCategory;
 import lombok.Data;
 
 @Data
-public class JobRequest {
+public class JobFilter {
 
     private JobCategory jobCategory;
     private String location;

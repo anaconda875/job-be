@@ -1,5 +1,6 @@
 package com.example.job.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "employer_id")
+    @JsonIgnore
     private Employer owner;
 
     @ManyToOne

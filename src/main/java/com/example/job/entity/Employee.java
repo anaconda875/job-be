@@ -1,8 +1,10 @@
 package com.example.job.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -37,7 +39,16 @@ public class Employee {
     @ManyToMany
     @JoinTable(name = "tbl_employee_job_category",
             joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_category_id"))
+    @EqualsAndHashCode.Exclude
+    private Set<JobCategory> jobCategories;
+
+    @ManyToMany
+    @JoinTable(name = "tbl_employee_applied",
+            joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "job_category"))
-    private Set<JobCategory> jobCategory;
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
+    private Set<Job> jobs;
 
 }

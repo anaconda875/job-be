@@ -1,6 +1,6 @@
 package com.example.job.service;
 
-import com.example.job.dto.request.JobRequest;
+import com.example.job.dto.request.JobFilter;
 import com.example.job.entity.Employer;
 import com.example.job.entity.Job;
 import com.example.job.exception.ResourceNotFoundException;
@@ -21,18 +21,30 @@ public class JobService {
     private final EmployerRepository employerRepository;
     private final JobRepository jobRepository;
 
-    public Job postJob(Long employerId, Job job) {
+    public Job create(Long employerId, Job job) {
         employerRepository.findById(employerId).orElseThrow(ResourceNotFoundException::new);
         job.setOwner(new Employer(employerId));
 
         return jobRepository.save(job);
     }
 
-    public Page<Job> searchJob(JobRequest jobRequest) {
-        Pageable pageable = jobRequest.getPageSize() == -1 ? Pageable.unpaged() : PageRequest.of(jobRequest.getPage(), jobRequest.getPageSize());
+    public Page<Job> find(JobFilter jobFilter) {
+        Pageable pageable = jobFilter.getPageSize() == -1 ? Pageable.unpaged() : PageRequest.of(jobFilter.getPage(), jobFilter.getPageSize());
 
-        return jobRepository.searchJob(pageable, jobRequest);
+        return jobRepository.find(pageable, jobFilter);
     }
+
+    public Job update(Long id, Job job) {
+        Job persisted = jobRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        persisted.setTitle(job.getTitle());
+        persisted.setDescription(job.getDescription());
+        persisted.setLocation(job.getLocation());
+        persisted.setExperienceLevel(job.getExperienceLevel());
+        persisted.setJobCategory(job.getJobCategory());
+
+        return jobRepository.save(persisted);
+    }
+
     @PostConstruct
     public void init() {
 //        postJob(null, new Job(null, "title1", "description1", "location1", null, null, null));

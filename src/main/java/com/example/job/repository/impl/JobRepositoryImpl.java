@@ -1,6 +1,6 @@
 package com.example.job.repository.impl;
 
-import com.example.job.dto.request.JobRequest;
+import com.example.job.dto.request.JobFilter;
 import com.example.job.entity.ExperienceLevel;
 import com.example.job.entity.Job;
 import com.example.job.entity.JobCategory;
@@ -25,28 +25,28 @@ public class JobRepositoryImpl implements JobRepositoryCustom {
     private final EntityManager entityManager;
 
     @Override
-    public Page<Job> searchJob(Pageable pageable, JobRequest jobRequest) {
+    public Page<Job> find(Pageable pageable, JobFilter jobFilter) {
         String sql = "SELECT job FROM Job job WHERE 1=1";
         Map<String, Object> params = new HashMap<>();
-        JobCategory jobCategory = jobRequest.getJobCategory();
+        JobCategory jobCategory = jobFilter.getJobCategory();
         if(jobCategory != null && jobCategory.getId() != null) {
             sql += " AND job.jobCategory.id = :jcid";
             params.put("jcid", jobCategory.getId());
         }
 
-        String location = jobRequest.getLocation();
+        String location = jobFilter.getLocation();
         if(location != null && !location.isBlank()) {
             sql += " AND job.location LIKE :loc";
             params.put("loc", "%" + location + "%");
         }
 
-        ExperienceLevel experienceLevel = jobRequest.getExperienceLevel();
+        ExperienceLevel experienceLevel = jobFilter.getExperienceLevel();
         if(experienceLevel != null && experienceLevel.getId() != null) {
             sql += " AND job.experienceLevel.id = :elid";
             params.put("elid", experienceLevel.getId());
         }
 
-        String keyword = jobRequest.getKeyword();
+        String keyword = jobFilter.getKeyword();
         if(keyword != null && !keyword.isBlank()) {
             sql += " AND (job.title LIKE :kw OR job.description LIKE :kw)";
             params.put("kw", "%" + keyword + "%");
