@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Job {
     @ManyToOne
     @JoinColumn(name = "employer_id")
     @JsonIgnore
+    @ToString.Exclude
     private Employer owner;
 
     @ManyToOne

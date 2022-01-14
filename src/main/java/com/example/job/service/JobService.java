@@ -52,12 +52,14 @@ public class JobService {
         return jobRepository.countByJobCategory(jobCategory);
     }
 
+//    public Map<LocalDate, int>
+
     @PostConstruct
     public void init() {
 //        create(1l, new Job(null, "title1", "description1", "location1", null, null, null, new JobCategory(1l)));
 //        create(1l, new Job(null, "title2", "description2", "location2", null, null, null, new JobCategory(2l)));
-        System.out.println(countByJobCategory(new JobCategory(1l)));
-        System.out.println(jobRepository.findByDateBetween(LocalDate.now(), LocalDate.now().plusDays(2)));
+//        System.out.println(countByJobCategory(new JobCategory(1l)));
+//        System.out.println(jobRepository.findByDateBetween(LocalDate.now(), LocalDate.now().plusDays(1)));
 //        System.out.println(jobRepository.searchJob(null, null, null, null));
     }
 

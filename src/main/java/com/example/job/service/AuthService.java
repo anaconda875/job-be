@@ -43,11 +43,11 @@ public class AuthService {
     }
 
     public Employee employeeLogin(Employee employee) {
-        return employeeRepository.findByIdAndPin(employee.getId(), employee.getPin()).orElseThrow(ResourceNotFoundException::new);
+        return employeeRepository.findByPhoneAndPin(employee.getPhone(), employee.getPin()).orElseThrow(ResourceNotFoundException::new);
     }
 
     public Employer employerLogin(Employer employer) {
-        return employerRepository.findByIdAndPin(employer.getId(), employer.getPin()).orElseThrow(ResourceNotFoundException::new);
+        return employerRepository.findByPhoneAndPin(employer.getPhone(), employer.getPin()).orElseThrow(ResourceNotFoundException::new);
     }
 
     public User userLogin(User user) {
