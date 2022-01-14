@@ -2,9 +2,11 @@ package com.example.job.service;
 
 import com.example.job.entity.Employee;
 import com.example.job.entity.Employer;
+import com.example.job.entity.User;
 import com.example.job.exception.ResourceNotFoundException;
 import com.example.job.repository.EmployeeRepository;
 import com.example.job.repository.EmployerRepository;
+import com.example.job.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class AuthService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployerRepository employerRepository;
+    private final UserRepository userRepository;
 
     public Employee employeeRegister(Employee employee) {
         String pin = "";
@@ -45,6 +48,10 @@ public class AuthService {
 
     public Employer employerLogin(Employer employer) {
         return employerRepository.findByIdAndPin(employer.getId(), employer.getPin()).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public User userLogin(User user) {
+        return userRepository.findByUsernameAndPwd(user.getUsername(), user.getPwd()).orElseThrow(ResourceNotFoundException::new);
     }
 
 }

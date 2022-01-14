@@ -2,6 +2,7 @@ package com.example.job.controller;
 
 import com.example.job.entity.Employee;
 import com.example.job.entity.Employer;
+import com.example.job.entity.User;
 import com.example.job.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,11 @@ public class AuthController {
     @PostMapping("/employer/login")
     public Employer employerLogin(@RequestBody Employer employer) {
         return authService.employerLogin(employer);
+    }
+
+    @PostMapping("/user/login")
+    public User userLogin(@RequestBody User user) {
+        return authService.userLogin(user);
     }
 
 }
