@@ -21,10 +21,11 @@ public class JobService {
     private final EmployerRepository employerRepository;
     private final JobRepository jobRepository;
 
-    public void postJob(Long employerId, Job job) {
-//        employerRepository.findById(employerId).orElseThrow(ResourceNotFoundException::new);
-//        job.setOwner(new Employer(employerId));
-        jobRepository.save(job);
+    public Job postJob(Long employerId, Job job) {
+        employerRepository.findById(employerId).orElseThrow(ResourceNotFoundException::new);
+        job.setOwner(new Employer(employerId));
+
+        return jobRepository.save(job);
     }
 
     public Page<Job> searchJob(JobRequest jobRequest) {
