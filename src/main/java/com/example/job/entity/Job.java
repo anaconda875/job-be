@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tbl_job")
@@ -27,6 +28,8 @@ public class Job {
     private String description;
 
     private String location;
+
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "employer_id")

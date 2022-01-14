@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class JobService {
     public Job create(Long employerId, Job job) {
         employerRepository.findById(employerId).orElseThrow(ResourceNotFoundException::new);
         job.setOwner(new Employer(employerId));
+        job.setDate(LocalDate.now());
 
         return jobRepository.save(job);
     }
