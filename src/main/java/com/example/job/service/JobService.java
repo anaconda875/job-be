@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,14 +54,16 @@ public class JobService {
         return jobRepository.countByJobCategory(jobCategory);
     }
 
-//    public Map<LocalDate, int>
+    public Map<LocalDate, Long> countByDates(LocalDate from, LocalDate to) {
+        return jobRepository.findByDateBetween(from, to).stream().collect(Collectors.groupingBy(Job::getDate, Collectors.counting()));
+    }
 
     @PostConstruct
     public void init() {
 //        create(1l, new Job(null, "title1", "description1", "location1", null, null, null, new JobCategory(1l)));
 //        create(1l, new Job(null, "title2", "description2", "location2", null, null, null, new JobCategory(2l)));
 //        System.out.println(countByJobCategory(new JobCategory(1l)));
-//        System.out.println(jobRepository.findByDateBetween(LocalDate.now(), LocalDate.now().plusDays(1)));
+        System.out.println(countByDates(LocalDate.now(), LocalDate.now().plusDays(1)));
 //        System.out.println(jobRepository.searchJob(null, null, null, null));
     }
 
