@@ -34,8 +34,8 @@ public class JobService {
     }
     @PostConstruct
     public void init() {
-        postJob(null, new Job(null, "title1", "description1", "location1", null, null, null));
-        postJob(null, new Job(null, "title2", "description2", "location2", null, null, null));
+//        postJob(null, new Job(null, "title1", "description1", "location1", null, null, null));
+//        postJob(null, new Job(null, "title2", "description2", "location2", null, null, null));
 //        System.out.println(jobRepository.searchJob(null, null, null, null));
     }
 
