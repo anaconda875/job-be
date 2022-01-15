@@ -43,12 +43,15 @@ public class Employee {
     @EqualsAndHashCode.Exclude
     private Set<JobCategory> jobCategories;
 
-    @ManyToMany
-    @JoinTable(name = "tbl_employee_applied",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_category"))
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    private Set<Job> jobs;
+//    @ManyToMany
+//    @JoinTable(name = "tbl_employee_applied",
+//            joinColumns = @JoinColumn(name = "employee_id"),
+//            inverseJoinColumns = @JoinColumn(name = "job_category"))
+//    @EqualsAndHashCode.Exclude
+//    @JsonIgnore
+//    private Set<Job> jobs;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<EmployeeApplied> jobs;
 
 }

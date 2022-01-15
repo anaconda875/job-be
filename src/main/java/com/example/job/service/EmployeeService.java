@@ -1,8 +1,10 @@
 package com.example.job.service;
 
 import com.example.job.entity.Employee;
+import com.example.job.entity.EmployeeApplied;
 import com.example.job.entity.Job;
 import com.example.job.exception.ResourceNotFoundException;
+import com.example.job.repository.EmployeeAppliedRepository;
 import com.example.job.repository.EmployeeRepository;
 import com.example.job.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +13,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeAppliedRepository employeeAppliedRepository;
     private final JobRepository jobRepository;
 
     public Page<Employee> find(int page, int pageSize) {
@@ -28,12 +33,13 @@ public class EmployeeService {
 
     public void applyJob(Long employeeId, Long jobId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(ResourceNotFoundException::new);
-        employee.getJobs().add(jobRepository.findById(jobId).orElseThrow(ResourceNotFoundException::new));
-        employeeRepository.save(employee);
+        Job job = jobRepository.findById(jobId).orElseThrow(ResourceNotFoundException::new);
+        employeeAppliedRepository.save(new EmployeeApplied(null, LocalDate.now(), employee, job));
     }
 
     public Set<Job> findApplied(Long employeeId) {
-        return employeeRepository.findById(employeeId).map(Employee::getJobs).orElseThrow(ResourceNotFoundException::new);
+        return employeeRepository.findById(employeeId).map(Employee::getJobs).orElseThrow(ResourceNotFoundException::new)
+                .stream().map(EmployeeApplied::getJob).collect(Collectors.toSet());
     }
 
     public Employee update(Long id, Employee employee) {

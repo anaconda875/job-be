@@ -1,10 +1,12 @@
 package com.example.job.service;
 
 import com.example.job.dto.request.JobFilter;
+import com.example.job.entity.EmployeeApplied;
 import com.example.job.entity.Employer;
 import com.example.job.entity.Job;
 import com.example.job.entity.JobCategory;
 import com.example.job.exception.ResourceNotFoundException;
+import com.example.job.repository.EmployeeAppliedRepository;
 import com.example.job.repository.EmployerRepository;
 import com.example.job.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,6 +27,7 @@ import java.util.stream.Collectors;
 public class JobService {
 
     private final EmployerRepository employerRepository;
+    private final EmployeeAppliedRepository employeeAppliedRepository;
     private final JobRepository jobRepository;
 
     public Job create(Long employerId, Job job) {
@@ -56,6 +61,17 @@ public class JobService {
 
     public Map<LocalDate, Long> countByDates(LocalDate from, LocalDate to) {
         return jobRepository.findByDateBetween(from, to).stream().collect(Collectors.groupingBy(Job::getDate, Collectors.counting()));
+    }
+
+    public Map<LocalDate, Long> countAppliedByDates(LocalDate from, LocalDate to) {
+        Map<LocalDate, List<EmployeeApplied>> appliedByDates = employeeAppliedRepository.findByDateBetween(from, to).stream().collect(Collectors.groupingBy(EmployeeApplied::getDate));
+
+        Map<LocalDate, Long> countByDates = new HashMap<>();
+        appliedByDates.forEach((date, applied) -> {
+            countByDates.put(date, applied.stream().map(EmployeeApplied::getJob).distinct().count());
+        });
+
+        return countByDates;
     }
 
     @PostConstruct
