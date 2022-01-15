@@ -43,7 +43,7 @@ public class JobService {
         return jobRepository.save(job);
     }
 
-    @Cacheable(value = REDIS_CACHE, key = "#jobFilter.toString()")
+//    @Cacheable(value = REDIS_CACHE, key = "#jobFilter.toString()")
     public Page<Job> find(JobFilter jobFilter) {
         Pageable pageable = jobFilter.getPageSize() == -1 ? Pageable.unpaged() : PageRequest.of(jobFilter.getPage(), jobFilter.getPageSize());
 
