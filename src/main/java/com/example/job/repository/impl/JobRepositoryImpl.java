@@ -7,6 +7,7 @@ import com.example.job.entity.JobCategory;
 import com.example.job.repository.JobRepositoryBasic;
 import com.example.job.repository.JobRepositoryCustom;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.*;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class JobRepositoryImpl implements JobRepositoryCustom {
@@ -52,6 +54,7 @@ public class JobRepositoryImpl implements JobRepositoryCustom {
             params.put("kw", "%" + keyword + "%");
         }
 
+        log.error("ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
         if(pageable.isUnpaged()) {
             TypedQuery<Job> query = entityManager.createQuery(sql, Job.class);
             this.setParameters(query, params);
@@ -59,10 +62,10 @@ public class JobRepositoryImpl implements JobRepositoryCustom {
             return new PageImpl<>(resultList, pageable, resultList.size());
         }
 
+        log.error("ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
         String countSql = "SELECT COUNT(*) " + sql.substring(sql.indexOf("FROM"));
-        System.out.println("ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
-        System.out.println(countSql);
-        System.out.println(sql);
+        log.error(countSql);
+        log.error(sql);
         TypedQuery<Long> countQuery = entityManager.createQuery(countSql, Long.class);
         setParameters(countQuery, params);
         long total = countQuery.getSingleResult();
