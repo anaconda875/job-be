@@ -28,10 +28,10 @@ public class JobRepositoryImpl implements JobRepositoryCustom {
     public Page<Job> find(Pageable pageable, JobFilter jobFilter) {
         String sql = "SELECT job FROM Job job WHERE 1=1";
         Map<String, Object> params = new HashMap<>();
-        JobCategory jobCategory = jobFilter.getJobCategory();
-        if(jobCategory != null && jobCategory.getId() != null) {
+        Long jobCategoryId = jobFilter.getJobCategoryId();
+        if(jobCategoryId != null) {
             sql += " AND job.jobCategory.id = :jcid";
-            params.put("jcid", jobCategory.getId());
+            params.put("jcid", jobCategoryId);
         }
 
         String location = jobFilter.getLocation();
@@ -40,10 +40,10 @@ public class JobRepositoryImpl implements JobRepositoryCustom {
             params.put("loc", "%" + location + "%");
         }
 
-        ExperienceLevel experienceLevel = jobFilter.getExperienceLevel();
-        if(experienceLevel != null && experienceLevel.getId() != null) {
+        Long experienceLevelId = jobFilter.getExperienceLevelId();
+        if(experienceLevelId != null) {
             sql += " AND job.experienceLevel.id = :elid";
-            params.put("elid", experienceLevel.getId());
+            params.put("elid", experienceLevelId);
         }
 
         String keyword = jobFilter.getKeyword();
