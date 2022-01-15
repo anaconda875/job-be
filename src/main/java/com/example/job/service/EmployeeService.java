@@ -8,6 +8,8 @@ import com.example.job.repository.EmployeeAppliedRepository;
 import com.example.job.repository.EmployeeRepository;
 import com.example.job.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +23,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EmployeeService {
 
+    private static final String REDIS_CACHE = "EmployeeService";
+
     private final EmployeeRepository employeeRepository;
     private final EmployeeAppliedRepository employeeAppliedRepository;
     private final JobRepository jobRepository;
 
+    @Cacheable(value = REDIS_CACHE, key = "#page.toString() + #pageSize.toString()")
     public Page<Employee> find(int page, int pageSize) {
         Pageable pageable = pageSize == -1 ? Pageable.unpaged() : PageRequest.of(page, pageSize);
 
@@ -42,6 +47,7 @@ public class EmployeeService {
                 .stream().map(EmployeeApplied::getJob).collect(Collectors.toSet());
     }
 
+    @CacheEvict(value = REDIS_CACHE)
     public Employee update(Long id, Employee employee) {
         Employee persisted = employeeRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         persisted.setAddress(employee.getAddress());
@@ -52,6 +58,7 @@ public class EmployeeService {
         return employeeRepository.save(persisted);
     }
 
+    @CacheEvict(value = REDIS_CACHE)
     public void delete(Long id) {
         employeeRepository.deleteById(id);
     }

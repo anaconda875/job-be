@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -16,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Employee {
+public class Employee implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +53,8 @@ public class Employee {
 //    private Set<Job> jobs;
 
     @OneToMany(mappedBy = "employee")
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<EmployeeApplied> jobs;
 
 }

@@ -10,6 +10,8 @@ import com.example.job.repository.EmployeeAppliedRepository;
 import com.example.job.repository.EmployerRepository;
 import com.example.job.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +28,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class JobService {
 
+    private static final String REDIS_CACHE = "JobService";
+
     private final EmployerRepository employerRepository;
     private final EmployeeAppliedRepository employeeAppliedRepository;
     private final JobRepository jobRepository;
 
+    @CacheEvict(value = REDIS_CACHE)
     public Job create(Long employerId, Job job) {
         employerRepository.findById(employerId).orElseThrow(ResourceNotFoundException::new);
         job.setOwner(new Employer(employerId));
@@ -38,12 +43,14 @@ public class JobService {
         return jobRepository.save(job);
     }
 
+    @Cacheable(value = REDIS_CACHE, key = "#jobFilter.toString()")
     public Page<Job> find(JobFilter jobFilter) {
         Pageable pageable = jobFilter.getPageSize() == -1 ? Pageable.unpaged() : PageRequest.of(jobFilter.getPage(), jobFilter.getPageSize());
 
         return jobRepository.find(pageable, jobFilter);
     }
 
+    @CacheEvict(value = REDIS_CACHE)
     public Job update(Long id, Job job) {
         Job persisted = jobRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
         persisted.setTitle(job.getTitle());
