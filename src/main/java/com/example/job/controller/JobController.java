@@ -26,7 +26,7 @@ public class JobController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Job create(@RequestHeader("User-Id") Long employerId, @RequestBody Job job) {
+    public Job create(@RequestParam("User-Id") Long employerId, @RequestBody Job job) {
         return jobService.create(employerId, job);
     }
 
