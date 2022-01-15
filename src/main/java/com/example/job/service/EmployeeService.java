@@ -29,7 +29,7 @@ public class EmployeeService {
     private final EmployeeAppliedRepository employeeAppliedRepository;
     private final JobRepository jobRepository;
 
-    @Cacheable(value = REDIS_CACHE, key = "#page.toString() + #pageSize.toString()")
+//    @Cacheable(value = REDIS_CACHE, key = "#page.toString() + #pageSize.toString()")
     public Page<Employee> find(int page, int pageSize) {
         Pageable pageable = pageSize == -1 ? Pageable.unpaged() : PageRequest.of(page, pageSize);
 

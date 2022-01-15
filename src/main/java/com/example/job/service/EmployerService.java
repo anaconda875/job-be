@@ -22,7 +22,7 @@ public class EmployerService {
 
     private final EmployerRepository employerRepository;
 
-    @Cacheable(value = REDIS_CACHE, key = "#page.toString() + #pageSize.toString()")
+//    @Cacheable(value = REDIS_CACHE, key = "#page.toString() + #pageSize.toString()")
     public Page<Employer> find(Integer page, Integer pageSize) {
         Pageable pageable = pageSize == -1 ? Pageable.unpaged() : PageRequest.of(page, pageSize);
 
