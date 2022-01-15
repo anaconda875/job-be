@@ -60,6 +60,9 @@ public class JobRepositoryImpl implements JobRepositoryCustom {
         }
 
         String countSql = "SELECT COUNT(*) " + sql.substring(sql.indexOf("FROM"));
+        System.out.println("ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
+        System.out.println(countSql);
+        System.out.println(sql);
         TypedQuery<Long> countQuery = entityManager.createQuery(countSql, Long.class);
         setParameters(countQuery, params);
         long total = countQuery.getSingleResult();
