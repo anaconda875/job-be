@@ -28,7 +28,7 @@ public class AuthService {
             pin += RANDOM.nextInt(10);
         }
 
-        employee.setPin(pin);
+        employee.setPin("123456");
         return employeeRepository.save(employee);
     }
 
@@ -38,7 +38,7 @@ public class AuthService {
             pin += RANDOM.nextInt(10);
         }
 
-        employer.setPin(pin);
+        employer.setPin("123456");
         return employerRepository.save(employer);
     }
 
