@@ -42,6 +42,7 @@ public class Employee implements Serializable {
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "job_category_id"))
     @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private Set<JobCategory> jobCategories;
 
 //    @ManyToMany
